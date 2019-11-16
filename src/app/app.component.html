@@ -1,0 +1,179 @@
+<style>
+  :host {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .example-card {
+    width: 500px;
+    margin: 20px;
+  }
+
+  .example-header-image {
+    background-size: cover;
+    object-fit: contain;
+  }
+
+  mat-icon{
+    width: 100%;
+    height: 100%;
+  }
+  .container{
+    margin:auto;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  form{
+    margin: auto;
+    padding: 20px;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  pre{
+    margin: 0;
+    font-family: sans-serif;
+  }
+
+  .content {
+    display: flex;
+    margin: 32px auto;
+    padding: 0 16px;
+    max-width: 960px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 16px;
+  }
+
+  .card {
+    border-radius: 4px;
+    border: 1px solid #eee;
+    background-color: #fafafa;
+    height: 40px;
+    width: 200px;
+    margin: 0 8px 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+    line-height: 24px;
+  }
+
+  .card-container .card:not(:last-child) {
+    margin-right: 0;
+  }
+
+  .card.card-small {
+    height: 16px;
+    width: 168px;
+  }
+
+  .card-container .card:not(.highlight-card) {
+    cursor: pointer;
+  }
+
+  .card-container .card:not(.highlight-card):hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 17px rgba(black, 0.35);
+  }
+
+  .card-container .card:not(.highlight-card):hover .material-icons path {
+    fill: rgb(105, 103, 103);
+  }
+
+  .card.highlight-card {
+    background-color: #1976d2;
+    color: white;
+    font-weight: 600;
+    border: none;
+    width: auto;
+    min-width: 30%;
+    position: relative;
+  }
+
+  .card.card.highlight-card span {
+    margin-left: 60px;
+  }
+
+  a,
+  a:visited,
+  a:hover {
+    color: #1976d2;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #125699;
+  }
+
+</style>
+
+<div class=container>
+  <h1>Job Postings</h1>
+  <p>Filter</p>
+<form class="form">
+  <mat-form-field class="example-full-width">
+    <input type="text" placeholder="Press Enter to Search Jobs" (keyup.enter)="onEnter($event)" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="filter">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option (onSelectionChange)="onSelect($event)"  *ngFor="let option of jobTitles" [value]="option">
+        {{option}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+</div>
+
+<div class="container">
+<tr *ngFor = 'let job of filteredJobs'>
+  <mat-card class="example-card">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"><mat-icon svgIcon="account_circle" aria-hidden="false" aria-label="Example thumbs up SVG icon"></mat-icon>
+      </div>
+      <mat-card-title><td>{{job.data['title']}}</td></mat-card-title>
+      <mat-card-subtitle>{{job.data['city']}}, {{job.data['country']}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+      <mat-expansion-panel [expanded]=expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            More Information
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        
+        <p>Applyable: {{job.data['applyable']}}</p>
+        <p>Education Level: {{job.data['education_level']}}</p>
+        <p>Employment Type: {{job.data['employment_type']}}</p>
+        <p>Experience Level: {{job.data['experience_levels']}}</p>
+        <p>Full Location: {{job.data['full_location']}}</p>
+        <pre>Additional Locations: {{job.data['additional_locations'] | json }}</pre>
+        <p>Salary: {{job.data['salary_min_value']}}-{{job.data['salary_max_value']}}</p>
+        <p>Benefits: {{job.data['benefits']}}</p>
+        <pre>Categories: {{job.data['category']}}</pre>
+        <p>Description: {{job.data['description']}} </p>
+      
+      </mat-expansion-panel>
+    </mat-card-actions>
+  </mat-card>
+</tr>
+</div>
+
+
+
+<router-outlet></router-outlet>
